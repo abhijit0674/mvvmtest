@@ -27,6 +27,7 @@ public class BikeListAdapter extends RecyclerView.Adapter<BikeListAdapter.MyView
     public BikeListAdapter(Context context, List<NetworkModel> networks) {
         this.context = context;
         this.networkModels = networks;
+        this.mFilteredList = networks;
     }
 
     @NonNull
@@ -37,16 +38,16 @@ public class BikeListAdapter extends RecyclerView.Adapter<BikeListAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvBikeName.setText(networkModels.get(position).getName());
-        holder.tvBikeCity.setText(networkModels.get(position).getLocation().getCity());
-        holder.tvBikeCountry.setText(networkModels.get(position).getLocation().getCountry());
-        holder.tvBikeLocation.setText(" ( " + networkModels.get(position).getLocation().getLatitude()
-                + ", " + networkModels.get(position).getLocation().getLongitude() + " ) ");
+        holder.tvBikeName.setText(mFilteredList.get(position).getName());
+        holder.tvBikeCity.setText(mFilteredList.get(position).getLocation().getCity());
+        holder.tvBikeCountry.setText(mFilteredList.get(position).getLocation().getCountry());
+        holder.tvBikeLocation.setText(" ( " + mFilteredList.get(position).getLocation().getLatitude()
+                + ", " + mFilteredList.get(position).getLocation().getLongitude() + " ) ");
     }
 
     @Override
     public int getItemCount() {
-        return networkModels.size();
+        return mFilteredList.size();
     }
 
     @Override
@@ -59,7 +60,6 @@ public class BikeListAdapter extends RecyclerView.Adapter<BikeListAdapter.MyView
                 String charString = charSequence.toString();
 
                 if (charString.isEmpty()) {
-
                     mFilteredList = networkModels;
                 } else {
 
@@ -67,8 +67,7 @@ public class BikeListAdapter extends RecyclerView.Adapter<BikeListAdapter.MyView
 
                     for (NetworkModel androidVersion : networkModels) {
 
-                        if (androidVersion.getName().toLowerCase().contains(charString)) {
-
+                        if (androidVersion.getName().toLowerCase().equals(charString)) {
                             filteredList.add(androidVersion);
                         }
                     }
